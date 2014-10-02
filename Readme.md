@@ -16,7 +16,7 @@ event := map[string]interface{}{
 }
 
 flat := Tableize(event)
-assert(t, flat["name.first_name"] == "tobi")
-assert(t, flat["name.last_name"] == "holowaychuk")
+assert(t, flat["name_first_name"] == "tobi")
+assert(t, flat["name_last_name"] == "holowaychuk")
 assert(t, flat["species"] == "ferret")
 ```

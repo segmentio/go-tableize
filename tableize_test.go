@@ -25,11 +25,11 @@ func TestTableize(t *testing.T) {
 	}
 
 	flat := Tableize(event)
-	assert.Equal(t, flat["name.first_name"], "tobi")
-	assert.Equal(t, flat["name.last_name"], "holowaychuk")
+	assert.Equal(t, flat["name_first_name"], "tobi")
+	assert.Equal(t, flat["name_last_name"], "holowaychuk")
 	assert.Equal(t, flat["species"], "ferret")
-	assert.Equal(t, flat["name.nick_name"], "shupa")
-	assert.Equal(t, flat["name.some_thing"], "tobi")
+	assert.Equal(t, flat["name_nick_name"], "shupa")
+	assert.Equal(t, flat["name_some_thing"], "tobi")
 }
 
 func TestSpeedSmall(t *testing.T) {

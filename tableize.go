@@ -19,7 +19,7 @@ func visit(ret map[string]interface{}, m map[string]interface{}, prefix string) 
 	for key, val := range m {
 		key = prefix + Snakecase(key)
 		if _, ok := val.(map[string]interface{}); ok {
-			visit(ret, val.(map[string]interface{}), key+".")
+			visit(ret, val.(map[string]interface{}), key+"_")
 		} else {
 			ret[key] = val
 		}
