@@ -1,7 +1,7 @@
 package tableize
 
-import "github.com/visionmedia/go-bench"
 import "github.com/bmizerany/assert"
+import "github.com/tj/go-bench"
 import "encoding/json"
 import "testing"
 
