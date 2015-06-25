@@ -1,11 +1,8 @@
 package tableize
 
 import "github.com/bmizerany/assert"
-import "github.com/tj/go-bench"
 import "encoding/json"
 import "testing"
-
-var ops int = 1e4
 
 func check(err error) {
 	if err != nil {
@@ -32,7 +29,7 @@ func TestTableize(t *testing.T) {
 	assert.Equal(t, flat["name_some_thing"], "tobi")
 }
 
-func TestSpeedSmall(t *testing.T) {
+func BenchmarkSmall(b *testing.B) {
 	str := `{
 	  "anonymousId": "b2e9efda-4fc1-4bfa-8dc8-95ce56d8f53e",
 	  "projectId": "gnv5tty0m6",
@@ -54,15 +51,12 @@ func TestSpeedSmall(t *testing.T) {
 	event := make(map[string]interface{})
 	check(json.Unmarshal([]byte(str), &event))
 
-	println()
-	b := bench.Start("Tableize() small")
-	for i := 0; i < ops; i++ {
+	for i := 0; i < b.N; i++ {
 		Tableize(event)
 	}
-	b.End(ops)
 }
 
-func TestSpeedMedium(t *testing.T) {
+func BenchmarkMedium(b *testing.B) {
 	str := `{
 	  "anonymousId": "b2e9efda-4fc1-4bfa-8dc8-95ce56d8f53e",
 	  "channel": "client",
@@ -93,15 +87,12 @@ func TestSpeedMedium(t *testing.T) {
 	event := make(map[string]interface{})
 	check(json.Unmarshal([]byte(str), &event))
 
-	println()
-	b := bench.Start("Tableize() medium")
-	for i := 0; i < ops; i++ {
+	for i := 0; i < b.N; i++ {
 		Tableize(event)
 	}
-	b.End(ops)
 }
 
-func TestSpeedLarge(t *testing.T) {
+func BenchmarkLarge(b *testing.B) {
 	str := `{
 	  "anonymousId": "b2e9efda-4fc1-4bfa-8dc8-95ce56d8f53e",
 	  "channel": "client",
@@ -180,10 +171,7 @@ func TestSpeedLarge(t *testing.T) {
 	event := make(map[string]interface{})
 	check(json.Unmarshal([]byte(str), &event))
 
-	println()
-	b := bench.Start("Tableize() large")
-	for i := 0; i < ops; i++ {
+	for i := 0; i < b.N; i++ {
 		Tableize(event)
 	}
-	b.End(ops)
 }
