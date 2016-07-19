@@ -4,8 +4,12 @@ import . "github.com/segmentio/go-snakecase"
 
 // Tableize the given map by flattening and normalizing all
 // of the key/value pairs recursively.
-func Tableize(m map[string]interface{}) map[string]interface{} {
-	ret := make(map[string]interface{}, len(m))
+func Tableize(m map[string]interface{}, hintSize ...int) map[string]interface{} {
+	hint := len(m)
+	if len(hintSize) > 0 {
+		hint = hintSize[0]
+	}
+	ret := make(map[string]interface{}, hint)
 	visit(ret, m, "")
 	return ret
 }
