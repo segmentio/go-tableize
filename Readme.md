@@ -4,6 +4,12 @@
  Go tableize the given map by recursively walking the map and normalizing
  its keys to produce a flat SQL-friendly map.
 
+## Install
+
+```
+go get github.com/segmentio/go-tableize
+```
+
 ## CLI
 
   ```bash
