@@ -1,21 +1,26 @@
 machine:
+  services:
+    - docker
   environment:
-    BASE_DIR: ${GOPATH%%:*}/src/github.com/${CIRCLE_PROJECT_USERNAME}
-    REPO_DIR: ${BASE_DIR}/${CIRCLE_PROJECT_REPONAME}
-    GO15VENDOREXPERIMENT: 1
-
-checkout:
-  post:
-    - mkdir -p ${BASE_DIR}
-    - ln -sf $(pwd) ${REPO_DIR}
+    PKG: ${CIRCLE_PROJECT_REPONAME}
+    URL: github.com/${CIRCLE_PROJECT_USERNAME}/${PKG}
+    DOCKER: >
+      docker run -i -t
+      -v ${GOPATH%%:*}:/go
+      -v ${HOME}/${PKG}:/go/src/${URL}
+      -v /var/run/docker.sock:/run/docker.sock
+      -v $(which docker):/usr/bin/docker:ro
+      -v $(which docker-compose):/usr/bin/docker-compose:ro
+      -w /go/src/${URL}
 
 dependencies:
+  pre:
+    - docker pull segment/golang:latest
   override:
-    - cd ${REPO_DIR} && go get -t -d -v ./...
+    - ${DOCKER} -v ${HOME}/.ssh:/root/.ssh:ro segment/golang:latest get
 
 test:
-  pre:
-    - cd ${REPO_DIR} && go vet ./...
   override:
-    - cd ${REPO_DIR} && go test -v -race ./...
-    - cd ${REPO_DIR} && go test -v -bench . ./...
+    - ${DOCKER} segment/golang:latest vet lint test bench
+  post:
+    - ${DOCKER} segment/golang:latest build
