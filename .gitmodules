@@ -1,6 +1,3 @@
 [submodule "vendor/github.com/segmentio/go-snakecase"]
 	path = vendor/github.com/segmentio/go-snakecase
 	url = https://github.com/segmentio/go-snakecase
-[submodule "cmd/vendor/github.com/tj/docopt"]
-	path = cmd/vendor/github.com/tj/docopt
-	url = https://github.com/tj/docopt
