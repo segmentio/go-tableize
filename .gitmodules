@@ -1,3 +1,0 @@
-[submodule "vendor/github.com/segmentio/go-snakecase"]
-	path = vendor/github.com/segmentio/go-snakecase
-	url = https://github.com/segmentio/go-snakecase
