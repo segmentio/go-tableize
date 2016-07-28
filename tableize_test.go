@@ -37,6 +37,7 @@ func TestTableizeWithSubstitution(t *testing.T) {
 			"NickName":       "shupa",
 			"$some_thing":    "tobi",
 		},
+		"_mid":    "value",
 		"species": "ferret",
 	}
 
@@ -45,6 +46,7 @@ func TestTableizeWithSubstitution(t *testing.T) {
 		Substitutions: map[string]string{
 			"species":          "r_species",
 			"name_$some_thing": "just_some_thing",
+			"_mid":             "u_mid",
 		},
 	})
 
@@ -53,6 +55,7 @@ func TestTableizeWithSubstitution(t *testing.T) {
 	assert.Equal(t, flat["r_species"], "ferret")
 	assert.Equal(t, flat["name_nick_name"], "shupa")
 	assert.Equal(t, flat["name_just_some_thing"], "tobi")
+	assert.Equal(t, flat["u_mid"], "value")
 }
 
 func BenchmarkSmall(b *testing.B) {
