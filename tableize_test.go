@@ -21,12 +21,38 @@ func TestTableize(t *testing.T) {
 		"species": "ferret",
 	}
 
-	flat := Tableize(event)
+	flat := Tableize(&Input{Value: event})
 	assert.Equal(t, flat["name_first_name"], "tobi")
 	assert.Equal(t, flat["name_last_name"], "holowaychuk")
 	assert.Equal(t, flat["species"], "ferret")
 	assert.Equal(t, flat["name_nick_name"], "shupa")
 	assert.Equal(t, flat["name_some_thing"], "tobi")
+}
+
+func TestTableizeWithSubstitution(t *testing.T) {
+	event := map[string]interface{}{
+		"name": map[string]interface{}{
+			"first   name  ": "tobi",
+			"Last-Name":      "holowaychuk",
+			"NickName":       "shupa",
+			"$some_thing":    "tobi",
+		},
+		"species": "ferret",
+	}
+
+	flat := Tableize(&Input{
+		Value: event,
+		Substitutions: map[string]string{
+			"species":          "r_species",
+			"name_$some_thing": "just_some_thing",
+		},
+	})
+
+	assert.Equal(t, flat["name_first_name"], "tobi")
+	assert.Equal(t, flat["name_last_name"], "holowaychuk")
+	assert.Equal(t, flat["r_species"], "ferret")
+	assert.Equal(t, flat["name_nick_name"], "shupa")
+	assert.Equal(t, flat["name_just_some_thing"], "tobi")
 }
 
 func BenchmarkSmall(b *testing.B) {
@@ -52,7 +78,7 @@ func BenchmarkSmall(b *testing.B) {
 	check(json.Unmarshal([]byte(str), &event))
 
 	for i := 0; i < b.N; i++ {
-		Tableize(event)
+		Tableize(&Input{Value: event})
 	}
 }
 
@@ -88,7 +114,7 @@ func BenchmarkMedium(b *testing.B) {
 	check(json.Unmarshal([]byte(str), &event))
 
 	for i := 0; i < b.N; i++ {
-		Tableize(event)
+		Tableize(&Input{Value: event})
 	}
 }
 
@@ -172,6 +198,6 @@ func BenchmarkLarge(b *testing.B) {
 	check(json.Unmarshal([]byte(str), &event))
 
 	for i := 0; i < b.N; i++ {
-		Tableize(event)
+		Tableize(&Input{Value: event})
 	}
 }
