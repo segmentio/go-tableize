@@ -1,6 +1,6 @@
 package tableize
 
-import . "github.com/segmentio/go-snakecase"
+import snakecase "github.com/segmentio/go-snakecase"
 
 // Tableize the given map by flattening and normalizing all
 // of the key/value pairs recursively.
@@ -21,7 +21,7 @@ func Tableize(m map[string]interface{}, hintSize ...int) map[string]interface{} 
 // name in information_schema.columns.
 func visit(ret map[string]interface{}, m map[string]interface{}, prefix string) {
 	for key, val := range m {
-		key = prefix + Snakecase(key)
+		key = prefix + snakecase.Snakecase(key)
 		if _, ok := val.(map[string]interface{}); ok {
 			visit(ret, val.(map[string]interface{}), key+"_")
 		} else {
