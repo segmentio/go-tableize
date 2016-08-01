@@ -1,6 +1,10 @@
 package tableize
 
-import snakecase "github.com/segmentio/go-snakecase"
+import (
+	"log"
+	"encoding/json"
+	snakecase "github.com/segmentio/go-snakecase"
+)
 
 type Input struct {
 	Value map[string]interface{}
@@ -35,6 +39,13 @@ func visit(ret map[string]interface{}, m map[string]interface{}, prefix string, 
 		key = prefix + snakecase.Snakecase(key)
 		if _, ok := val.(map[string]interface{}); ok {
 			visit(ret, val.(map[string]interface{}), key+"_", substitutions)
+		} else if _, ok := val.([]interface{}); ok {
+			arrayJSON, err := json.Marshal(val)
+			if err != nil {
+				log.Printf("[Error] Unable to marshall value `%v` err: %v", val, err)
+			} else {
+				ret[key] = arrayJSON
+			}
 		} else {
 			ret[key] = val
 		}
