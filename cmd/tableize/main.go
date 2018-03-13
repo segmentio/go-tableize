@@ -48,7 +48,7 @@ func main() {
 			log.Fatal(err)
 		}
 
-		err = enc.Encode(tableize.Tableize(m))
+		err = enc.Encode(tableize.Tableize(&tableize.Input{Value: m}))
 		if err != nil {
 			log.Fatal(err)
 		}

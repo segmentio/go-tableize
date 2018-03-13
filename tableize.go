@@ -1,6 +1,10 @@
 package tableize
 
-import snakecase "github.com/segmentio/go-snakecase"
+import (
+	"sort"
+
+	snakecase "github.com/segmentio/go-snakecase"
+)
 
 type Input struct {
 	Value map[string]interface{}
@@ -28,7 +32,9 @@ func Tableize(in *Input) map[string]interface{} {
 // redshift, as RS _always_ lowercases the column
 // name in information_schema.columns.
 func visit(ret map[string]interface{}, m map[string]interface{}, prefix string, substitutions map[string]string) {
-	for key, val := range m {
+	keys := getSortedKeys(m)
+	for _, key := range keys {
+		val := m[key]
 		if renamed, ok := substitutions[prefix+key]; ok {
 			key = renamed
 		}
@@ -39,4 +45,13 @@ func visit(ret map[string]interface{}, m map[string]interface{}, prefix string, 
 			ret[key] = val
 		}
 	}
+}
+
+func getSortedKeys(m map[string]interface{}) []string {
+	keys := make([]string, 0, len(m))
+	for key := range m {
+		keys = append(keys, key)
+	}
+	sort.Strings(keys)
+	return keys
 }
