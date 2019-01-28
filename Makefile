@@ -4,7 +4,7 @@ test:
 .PHONY: test
 
 bench:
-	@go test -cover -cpu 1,4 -bench=. ./...
+	@go test -cpu 1,2,4 -bench=. -benchmem
 .PHONY: bench
 
 race:
