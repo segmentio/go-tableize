@@ -40,10 +40,13 @@ func visit(ret map[string]interface{}, m map[string]interface{}, prefix string, 
 
 	for _, key := range keys {
 		val = m[key]
-		if renamed, ok = substitutions[prefix+key]; ok {
-			key = renamed
+		if len(substitutions) > 0 {
+			if renamed, ok = substitutions[prefix+key]; ok {
+				key = renamed
+			}
 		}
 		key = prefix + snakecase.Snakecase(key)
+
 		switch t := val.(type) {
 		case map[string]interface{}:
 			visit(ret, t, key+"_", substitutions)
