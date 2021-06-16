@@ -3,6 +3,7 @@ package tableize
 import (
 	"sort"
 
+	"github.com/segmentio/encoding/json"
 	snakecase "github.com/segmentio/go-snakecase"
 )
 
@@ -50,6 +51,9 @@ func visit(ret map[string]interface{}, m map[string]interface{}, prefix string, 
 		switch t := val.(type) {
 		case map[string]interface{}:
 			visit(ret, t, key+"_", substitutions)
+		case []interface{}:
+			b, _ := json.Marshal(val)
+			ret[key] = string(b)
 		default:
 			ret[key] = val
 		}
