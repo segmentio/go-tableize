@@ -50,7 +50,6 @@ func visit(ret map[string]interface{}, m map[string]interface{}, prefix string, 
 		}
 		key = prefix + snakecase.Snakecase(key)
 
-		key = prefix + snakecase.Snakecase(key)
 		switch t := val.(type) {
 		case map[string]interface{}:
 			visit(ret, t, key+"_", substitutions, stringifyArr)
