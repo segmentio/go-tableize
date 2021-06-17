@@ -116,7 +116,7 @@ func TestTableizeArray(t *testing.T) {
 	prop := make(map[string]interface{})
 	dec.Decode(&prop)
 	var arr []interface{}
-	arr = append(arr,"a@b.com", "service@v.com.au")
+	arr = append(arr, "a@b.com", "service@v.com.au")
 	marshal, _ := json.Marshal(arr)
 	arrStr := string(marshal)
 	spec := []struct {
@@ -125,31 +125,31 @@ func TestTableizeArray(t *testing.T) {
 		expected map[string]interface{}
 	}{
 		{
-			desc: "array inside big JSON",
+			desc:  "array inside big JSON",
 			input: Input{Value: prop, StringifyArr: true},
 			expected: map[string]interface{}{
-				"context_latitude" : nil,
-				"context_location" : nil,
-				"event_type" : "FacebookComment",
-				"graph_object_id" : "null",
-				"program" : "source-runner",
-				"ticket_event_id" : json.Number("17820988764"),
-				"ticket_event_via" : "Mail",
-				"ticket_id" : "357276",
-				"trusted" : true,
-				"via_source_rel" : nil,
-				"via_source_to_address" : nil,
-				"context_client" : nil,
-				"context_longitude" : nil,
-				"data" : "{\"via_zendesk\":true}",
-				"via_source_from_address" : nil,
-				"via_source_from_name" : "a b",
-				"via_source_from_original_recipients" : arrStr,
-				"timestamp" : "2014-07-18T04:12:42.000Z",
-				"updater_id" : "473752564",
-				"version" : "8bc54c3",
-				"via_channel" : "email",
-				"via_source_to_name" : "companyName",
+				"context_latitude":                    nil,
+				"context_location":                    nil,
+				"event_type":                          "FacebookComment",
+				"graph_object_id":                     "null",
+				"program":                             "source-runner",
+				"ticket_event_id":                     json.Number("17820988764"),
+				"ticket_event_via":                    "Mail",
+				"ticket_id":                           "357276",
+				"trusted":                             true,
+				"via_source_rel":                      nil,
+				"via_source_to_address":               nil,
+				"context_client":                      nil,
+				"context_longitude":                   nil,
+				"data":                                "{\"via_zendesk\":true}",
+				"via_source_from_address":             nil,
+				"via_source_from_name":                "a b",
+				"via_source_from_original_recipients": arrStr,
+				"timestamp":                           "2014-07-18T04:12:42.000Z",
+				"updater_id":                          "473752564",
+				"version":                             "8bc54c3",
+				"via_channel":                         "email",
+				"via_source_to_name":                  "companyName",
 			},
 		},
 		{
@@ -172,7 +172,7 @@ func TestTableizeArray(t *testing.T) {
 				"colors": []interface{}{"red", "blue"},
 			},
 		},
-	}                                                                                          
+	}
 
 	for _, test := range spec {
 		t.Run(test.desc, func(t *testing.T) {

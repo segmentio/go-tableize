@@ -68,7 +68,6 @@ func visit(ret map[string]interface{}, m map[string]interface{}, prefix string, 
 			ret[key] = val
 		}
 	}
-
 }
 
 func getSortedKeys(m map[string]interface{}) []string {
