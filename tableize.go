@@ -50,32 +50,26 @@ func visit(ret map[string]interface{}, m map[string]interface{}, prefix string, 
 		}
 		key = prefix + snakecase.Snakecase(key)
 
-		for _, key := range keys {
-			val = m[key]
-			if renamed, ok = substitutions[prefix+key]; ok {
-				key = renamed
-			}
-			key = prefix + snakecase.Snakecase(key)
-			switch t := val.(type) {
-			case map[string]interface{}:
-				visit(ret, t, key+"_", substitutions, stringifyArr)
-			case []interface{}:
-				if stringifyArr {
-					valByteArr, err := json.Marshal(val)
-					if err != nil {
-						log.Printf("[Error] Unable to marshall value `%v` err: %v", val, err)
-					} else {
-						ret[key] = string(valByteArr)
-					}
+		key = prefix + snakecase.Snakecase(key)
+		switch t := val.(type) {
+		case map[string]interface{}:
+			visit(ret, t, key+"_", substitutions, stringifyArr)
+		case []interface{}:
+			if stringifyArr {
+				valByteArr, err := json.Marshal(val)
+				if err != nil {
+					log.Printf("[Error] Unable to marshall value `%v` err: %v", val, err)
 				} else {
-					ret[key] = val
+					ret[key] = string(valByteArr)
 				}
-			default:
+			} else {
 				ret[key] = val
 			}
+		default:
+			ret[key] = val
 		}
-
 	}
+
 }
 
 func getSortedKeys(m map[string]interface{}) []string {
