@@ -1,11 +1,10 @@
-package tableize_test
+package tableize
 
 import (
 	"bytes"
 	"encoding/json"
 	"testing"
 
-	. "github.com/segmentio/go-tableize"
 	"github.com/stretchr/testify/assert"
 )
 
