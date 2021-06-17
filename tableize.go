@@ -13,9 +13,9 @@ type Input struct {
 	Value map[string]interface{}
 
 	// Optional
-	HintSize      int
-	Substitutions map[string]string
-	StringifyArrays  bool
+	HintSize        int
+	Substitutions   map[string]string
+	StringifyArrays bool
 }
 
 // Tableize the given map by flattening and normalizing all
