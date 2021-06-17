@@ -2,7 +2,7 @@ steps:
   - label: 'Test'
     env:
       SEGMENT_CONTEXTS: snyk, aws-credentials
-      SEGMENT_BUILDKITE_IMAGE: 'buildkite-agent-golang1.15'
+      SEGMENT_BUILDKITE_IMAGE: 'buildkite-agent-golang1.16'
     agents:
       queue: v1
 
