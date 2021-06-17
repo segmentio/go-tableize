@@ -15,7 +15,7 @@ type Input struct {
 	// Optional
 	HintSize      int
 	Substitutions map[string]string
-	StringifyArr  bool
+	StringifyArrays  bool
 }
 
 // Tableize the given map by flattening and normalizing all
@@ -26,7 +26,7 @@ func Tableize(in *Input) map[string]interface{} {
 	}
 
 	ret := make(map[string]interface{}, in.HintSize)
-	visit(ret, in.Value, "", in.Substitutions, in.StringifyArr)
+	visit(ret, in.Value, "", in.Substitutions, in.StringifyArrays)
 	return ret
 }
 
@@ -57,7 +57,7 @@ func visit(ret map[string]interface{}, m map[string]interface{}, prefix string, 
 			if stringifyArr {
 				valByteArr, err := json.Marshal(val)
 				if err != nil {
-					log.Printf("[Error] Unable to marshall value `%v` err: %v", val, err)
+					log.Printf("go-tableize: dropping array value %+v that could not be converted to string: %s\n", val, err)
 				} else {
 					ret[key] = string(valByteArr)
 				}

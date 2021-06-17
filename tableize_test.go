@@ -126,7 +126,7 @@ func TestTableizeArray(t *testing.T) {
 	}{
 		{
 			desc:  "array inside big JSON",
-			input: Input{Value: prop, StringifyArr: true},
+			input: Input{Value: prop, StringifyArrays: true},
 			expected: map[string]interface{}{
 				"context_latitude":                    nil,
 				"context_location":                    nil,
@@ -156,7 +156,7 @@ func TestTableizeArray(t *testing.T) {
 			desc: "simple arr StringifyArr=true",
 			input: Input{Value: map[string]interface{}{
 				"colors": []interface{}{"red", "blue"},
-			}, StringifyArr: true,
+			}, StringifyArrays: true,
 			},
 			expected: map[string]interface{}{
 				"colors": "[\"red\",\"blue\"]",
@@ -166,7 +166,7 @@ func TestTableizeArray(t *testing.T) {
 			desc: "simple arr StringifyArr=false",
 			input: Input{Value: map[string]interface{}{
 				"colors": []interface{}{"red", "blue"},
-			}, StringifyArr: false,
+			}, StringifyArrays: false,
 			},
 			expected: map[string]interface{}{
 				"colors": []interface{}{"red", "blue"},
