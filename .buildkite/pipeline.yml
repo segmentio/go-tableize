@@ -1,0 +1,24 @@
+steps:
+  - label: 'Test'
+    env:
+      SEGMENT_CONTEXTS: snyk, aws-credentials
+      SEGMENT_BUILDKITE_IMAGE: 'buildkite-agent-golang1.15'
+    agents:
+      queue: v1
+
+    commands: |
+      echo '--- Snyk'
+      bk-snyk
+      echo '--- Downloading Dependencies'
+      go mod vendor
+      echo '--- Running tests'
+      go vet ./...
+      go test -race ./...
+  - wait: ~
+
+  - label: 'Build and Publish'
+    commands: |
+      echo '--- Building Docker Image'
+      docker build -t "$${ECR_REPOSITORY}/$${BUILDKITE_PIPELINE_SLUG}:$${BUILDKITE_BRANCH}" --build-arg "VERSION=$${BUILDKITE_BRANCH}" .
+      echo '--- Pushing Docker Image to ECR'
+      docker push "$${ECR_REPOSITORY}/$${BUILDKITE_PIPELINE_SLUG}:$${BUILDKITE_BRANCH}"
