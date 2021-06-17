@@ -35,7 +35,7 @@ func Tableize(in *Input) map[string]interface{} {
 // are mapped correctly to the schema fetched from
 // redshift, as RS _always_ lowercases the column
 // name in information_schema.columns.
-func visit(ret map[string]interface{}, m map[string]interface{}, prefix string, substitutions map[string]string, stringifyArr bool) {
+func visit(ret map[string]interface{}, m map[string]interface{}, prefix string, substitutions map[string]string, stringifyArrays bool) {
 	var val interface{}
 	var renamed string
 	var ok bool
@@ -52,9 +52,9 @@ func visit(ret map[string]interface{}, m map[string]interface{}, prefix string, 
 
 		switch t := val.(type) {
 		case map[string]interface{}:
-			visit(ret, t, key+"_", substitutions, stringifyArr)
+			visit(ret, t, key+"_", substitutions, stringifyArrays)
 		case []interface{}:
-			if stringifyArr {
+			if stringifyArrays {
 				valByteArr, err := json.Marshal(val)
 				if err != nil {
 					log.Printf("go-tableize: dropping array value %+v that could not be converted to string: %s\n", val, err)

@@ -152,7 +152,7 @@ func TestTableizeArray(t *testing.T) {
 			},
 		},
 		{
-			desc: "simple arr StringifyArr=true",
+			desc: "simple arr StringifyArrays=true",
 			input: Input{Value: map[string]interface{}{
 				"colors": []interface{}{"red", "blue"},
 			}, StringifyArrays: true,
@@ -162,7 +162,7 @@ func TestTableizeArray(t *testing.T) {
 			},
 		},
 		{
-			desc: "simple arr StringifyArr=false",
+			desc: "simple arr StringifyArrays=false",
 			input: Input{Value: map[string]interface{}{
 				"colors": []interface{}{"red", "blue"},
 			}, StringifyArrays: false,
