@@ -1,8 +1,10 @@
 package tableize
 
 import (
+	"log"
 	"sort"
 
+	"github.com/segmentio/encoding/json"
 	snakecase "github.com/segmentio/go-snakecase"
 )
 
@@ -11,8 +13,9 @@ type Input struct {
 	Value map[string]interface{}
 
 	// Optional
-	HintSize      int
-	Substitutions map[string]string
+	HintSize        int
+	Substitutions   map[string]string
+	StringifyArrays bool
 }
 
 // Tableize the given map by flattening and normalizing all
@@ -23,7 +26,7 @@ func Tableize(in *Input) map[string]interface{} {
 	}
 
 	ret := make(map[string]interface{}, in.HintSize)
-	visit(ret, in.Value, "", in.Substitutions)
+	visit(ret, in.Value, "", in.Substitutions, in.StringifyArrays)
 	return ret
 }
 
@@ -32,7 +35,7 @@ func Tableize(in *Input) map[string]interface{} {
 // are mapped correctly to the schema fetched from
 // redshift, as RS _always_ lowercases the column
 // name in information_schema.columns.
-func visit(ret map[string]interface{}, m map[string]interface{}, prefix string, substitutions map[string]string) {
+func visit(ret map[string]interface{}, m map[string]interface{}, prefix string, substitutions map[string]string, stringifyArrays bool) {
 	var val interface{}
 	var renamed string
 	var ok bool
@@ -49,7 +52,18 @@ func visit(ret map[string]interface{}, m map[string]interface{}, prefix string, 
 
 		switch t := val.(type) {
 		case map[string]interface{}:
-			visit(ret, t, key+"_", substitutions)
+			visit(ret, t, key+"_", substitutions, stringifyArrays)
+		case []interface{}:
+			if stringifyArrays {
+				valByteArr, err := json.Marshal(val)
+				if err != nil {
+					log.Printf("go-tableize: dropping array value %+v that could not be converted to string: %s\n", val, err)
+				} else {
+					ret[key] = string(valByteArr)
+				}
+			} else {
+				ret[key] = val
+			}
 		default:
 			ret[key] = val
 		}
